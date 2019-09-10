@@ -1,0 +1,43 @@
+/**********************
+Leetocode yes
+problem no 
+time O(n)
+Space O(n)
+
+Using queue peek function to implement iterator peek function
+***************************/
+class PeekingIterator implements Iterator<Integer> {
+    
+    Queue<Integer> queue = new LinkedList<>();
+
+	public PeekingIterator(Iterator<Integer> iterator) {
+	    // initialize any member here.
+        //fiiling up the queue
+        
+        while(iterator.hasNext())
+        {
+            queue.add(iterator.next());
+        }
+	    
+	}
+
+    // Returns the next element in the iteration without advancing the iterator.
+	public Integer peek() {
+        
+        return queue.peek();
+        
+	}
+
+	// hasNext() and next() should behave the same as in the Iterator interface.
+	// Override them if needed.
+	@Override
+	public Integer next() {
+	    return queue.poll();
+	}
+
+	@Override
+	public boolean hasNext() {
+        return !queue.isEmpty();
+	    
+	}
+}
