@@ -1,0 +1,112 @@
+/*****************
+Time O(mn) n = no of followees of a user and m = no of tweets of a followee
+Space O(n) where n is no of users
+Leetcode yes
+Problem no
+
+
+
+*****************/
+
+class Twitter {
+    
+    Map<Integer , Set<Integer>> followees = new HashMap<>();
+    Map<Integer , List<Tweet>> tweets = new HashMap<>();
+    int feedSize = 10;
+    int timeStamp = 0;
+    
+    public static class Tweet{
+        int id;
+        int createdAt;
+        
+    public Tweet(int id, int createdAt)
+    {
+        this.id = id;
+        this.createdAt = createdAt;
+    }
+        
+    }
+
+    /** Initialize your data structure here. */
+    public Twitter() {
+        
+    }
+    
+    /** Compose a new tweet. */
+    public void postTweet(int userId, int tweetId) {
+        
+        if(!tweets.containsKey(userId))
+            tweets.put(userId , new ArrayList<>());
+        tweets.get(userId).add( new Tweet(tweetId ,timeStamp++));
+        
+        if(!followees.containsKey(userId))
+            followees.put(userId , new HashSet<>());
+        followees.get(userId).add(userId);
+                 
+        
+    }
+    
+    /** Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent. */
+    public List<Integer> getNewsFeed(int userId) {
+        
+        PriorityQueue<Tweet> pTweets = new PriorityQueue<>((t1,t2) -> t1.createdAt - t2.createdAt);
+        Set<Integer> followee = followees.get(userId);
+        
+        if(followee !=null)
+        {
+            
+            for(int f : followee)
+            {
+                List<Tweet> fTweets = tweets.get(f);
+                if(fTweets != null) 
+                {
+                   
+                for(Tweet t : fTweets)
+                {
+                    if(pTweets.size() < feedSize)
+                        pTweets.add(t);
+                    else
+                    {
+                        if(t.createdAt > pTweets.peek().createdAt)
+                        {
+                           
+                            pTweets.poll();
+                             pTweets.add(t);
+                        }
+                    }
+                }
+                }
+            }
+        }
+        
+        List<Integer> res = new ArrayList<>();
+        while(!pTweets.isEmpty()) res.add(0, pTweets.poll().id);
+       return res;
+       
+    }
+    
+    /** Follower follows a followee. If the operation is invalid, it should be a no-op. */
+    public void follow(int followerId, int followeeId) {
+        
+        if(!followees.containsKey(followerId))
+            followees.put(followerId , new HashSet<>());
+        followees.get(followerId).add(followeeId);  
+    }
+    
+    /** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
+    public void unfollow(int followerId, int followeeId) {
+        
+        if(followees.containsKey(followerId) && followerId!=followeeId)
+            followees.get(followerId).remove(followeeId);
+        
+    }
+}
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter obj = new Twitter();
+ * obj.postTweet(userId,tweetId);
+ * List<Integer> param_2 = obj.getNewsFeed(userId);
+ * obj.follow(followerId,followeeId);
+ * obj.unfollow(followerId,followeeId);
+ */
