@@ -1,7 +1,7 @@
 # Time Complexity : O(nlogn) where n is the total number of tweets made by all the users
 # Space Complexity : Confused between O(n) where n is the total number of tweets made by all the users
 # Did this code successfully run on Leetcode : Yes
-# Any problem you faced while coding this : Yes. I have problem implementing using a heap
+# Any problem you faced while coding this : Yes. I have problem implementing using a heap in python
 
 
 
