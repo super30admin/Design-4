@@ -47,11 +47,8 @@ twitter.getNewsFeed(1);
  */
 
 
-/* Optimizations :  To remove the  timestamp hash table. 
-  Kindly note that priority queue can also be removed here
-   as the hash table is already taking care of timestamp values, but for understanding purpose I have kept it here, as
-    when we want to remove the timestamp hash table, this logic will be used. Only point to think is how to map order
-     in that case */
+/* Optimizations :  To take away this timestamp hash table. Currently I am not able to optimize it more. Will think
+ through it and then update it again  */
 class Twitter {
 public:
     int timestamp; /* unique timestamp for each tweet */
