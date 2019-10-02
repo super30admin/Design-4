@@ -1,5 +1,5 @@
 //Time Complexity:O(1)
-//SPace Complexity:O(N) --queue
+//SPace Complexity:O(N) --iterator
 //In this problem, an iterator will be initialized. The initial value of peek will be -1. In the constructor, I'll be initialising the value of peek as the next value, only if the hasnext function, returns true. In the peek function, I'll be returning the value of peek. In the next function, I'll be returning the peek value and update the peek value to point to the next element.The hasnext function will return true, if peek is not equal to -1. If the type is changed from Integer to Template, then we can use all of these functions for any data type.
 //This code was executed successfully and got accepted in leetcode. 
 class PeekingIterator implements Iterator<Integer> {
