@@ -70,7 +70,7 @@ Design a SkipIterator that supports a method skip(int val). When it is called th
 
 	}
 
-}
+	}
 Example:
 
 SkipIterator itr = new SkipIterator([2, 3, 5, 6, 5, 7, 5, -1, 5, 10]);
