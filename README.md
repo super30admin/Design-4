@@ -36,16 +36,67 @@ twitter.unfollow(1, 2);
 twitter.getNewsFeed(1);
 
 
-## Problem 2: Peeking Iterator(https://leetcode.com/problems/peeking-iterator/)
+## Problem 2: Skip Iterator(https://leetcode.com/discuss/interview-question/341818/Google-or-Onsite-or-Skip-Iterator)
 
-Given an Iterator class interface with methods: next() and hasNext(), design and implement a PeekingIterator that support the peek() operation -- it essentially peek() at the element that will be returned by the next call to next().
+Design a SkipIterator that supports a method skip(int val). When it is called the next element equals val in iterator sequence should be skipped. If you are not familiar with Iterators check similar problems.
 
+    class SkipIterator implements Iterator<Integer> {
+
+
+	public SkipIterator(Iterator<Integer> it) {
+
+	}
+
+
+	public boolean hasNext() {
+
+	}
+
+
+	public Integer next() {
+
+	}
+
+
+	/**
+
+	* The input parameter is an int, indicating that the next element equals 'val' needs to be skipped.
+
+	* This method can be called multiple times in a row. skip(5), skip(5) means that the next two 5s should be skipped.
+
+	*/ 
+
+	public void skip(int val) {
+
+	}
+
+}
 Example:
 
-Assume that the iterator is initialized to the beginning of the list: [1,2,3].
+SkipIterator itr = new SkipIterator([2, 3, 5, 6, 5, 7, 5, -1, 5, 10]);
 
-Call next() gets you 1, the first element in the list.
-Now you call peek() and it returns 2, the next element. Calling next() after that still return 2. 
-You call next() the final time and it returns 3, the last element. 
-Calling hasNext() after that should return false.
-Follow up: How would you extend your design to be generic and work with all types, not just integer?
+itr.hasNext(); // true
+
+itr.next(); // returns 2
+
+itr.skip(5);
+
+itr.next(); // returns 3
+
+itr.next(); // returns 6 because 5 should be skipped
+
+itr.next(); // returns 5
+
+itr.skip(5);
+
+itr.skip(5);
+
+itr.next(); // returns 7
+
+itr.next(); // returns -1
+
+itr.next(); // returns 10
+
+itr.hasNext(); // false
+
+itr.next(); // error
