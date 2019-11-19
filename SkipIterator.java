@@ -1,5 +1,5 @@
-//Time Complexity :O(1) for posting a tweet, follow, unfollow. O(N) for getNewsFeed
-//Space Complexity :O(1)
+//Time Complexity :O(1) for next, skip, unfollow. O(N) for hasNext()
+//Space Complexity :O(N)
 //Did this code successfully run on Leetcode :yes
 //Any problem you faced while coding this :Nope
 
