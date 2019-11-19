@@ -18,7 +18,7 @@ class Twitter {
 	class Tweet{
 		int id;
 		int timestamp;
-		// String text; ignoring for simplicity
+		// String text;  ignoring for simplicity
 		private Tweet(int id , int tweetTimestamp){
 			this.id = id;
 			this.timestamp = tweetTimestamp;

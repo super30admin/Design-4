@@ -24,7 +24,7 @@ class SkipIterator implements Iterator<Integer> {
 		
 	}
 	/**
-	* The input parameter is an int, indicating that the next element equals 'val' needs to be skipped.
+	* The inpu t parameter is an int, indicating that the next element equals 'val' needs to be skipped.
 	* This method can be called multiple times in a row. skip(5), skip(5) means that the next two 5s should be skipped.
 	*/ 
 	public void skip(int val) {
