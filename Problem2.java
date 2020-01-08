@@ -1,6 +1,14 @@
 /**
 The idea is to use hashmap to store the counter for number of skips and also override hasNext and next method which is critical. The advance helper function provides simple ways to provide skip and next functionality.
+
+Space Complexity : O(N) 
+
+Time Complexity : O(1) for Hash Map Counter and O(N) for next operations
+N : number of the elements in the iterator.
+
 **/
+
+
 
 class SkipIterator implements Iterator<Integer> {
     Iterator<Integer> it;
