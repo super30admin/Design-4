@@ -1,4 +1,5 @@
-
+//Time: O(n*logk) ~ O(n) because logk would always be for max allowed values can be considered as constant
+//Space: O(n) n is number of tweets
 class Twitter {
     int userId;
     int timestamp=0;
