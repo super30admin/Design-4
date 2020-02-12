@@ -1,7 +1,4 @@
-// Time Complexity - O(n) where n is the number of tweets
-// Space C
-
-
+// This Solution Worked on LeetCode
 
 class Twitter {
 
