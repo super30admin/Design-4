@@ -1,0 +1,96 @@
+//Time: O(n*logk) ~ O(n) because logk would always be for max allowed values can be considered as constant
+//Space: O(n) n is number of tweets
+class Twitter {
+    int userId;
+    int timestamp=0;
+    HashMap<Integer, Set<Integer>> followed;
+    HashMap<Integer, List<Tweet>> tweets;
+    int maxAllowed=10;
+    
+    private class Tweet
+    {
+        int id;
+        int createdAt;
+        Tweet(int id, int createdAt)
+        {
+            this.id=id;
+            this.createdAt=createdAt;
+        }
+    }
+    /** Initialize your data structure here. */
+    public Twitter() {
+        followed=new HashMap<>();
+        tweets=new HashMap<>();
+    }
+    
+    /** Compose a new tweet. */
+    public void postTweet(int userId, int tweetId) {
+       
+        follow(userId,userId); 
+        if(!tweets.containsKey(userId))
+            tweets.put(userId, new ArrayList<>());
+        tweets.get(userId).add(new Tweet(tweetId, timestamp++));
+    }
+    
+    /** Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent. */
+    public List<Integer> getNewsFeed(int userId) {
+        PriorityQueue<Tweet> pq=new PriorityQueue<>((a,b)-> a.createdAt-b.createdAt);
+        Set<Integer> followingPeoples=followed.get(userId);
+        if(followingPeoples!=null)
+        {
+              for(Integer following: followingPeoples)
+              {
+                 List<Tweet> ftweets= tweets.get(following);
+                  //iterate all tweets over and add it to priority queue
+                  if(ftweets!=null)
+                  {
+                      for(Tweet ftweet: ftweets)
+                      {
+                          //add it to pq if there is capacity in queue
+                          if(pq.size()<maxAllowed)
+                              pq.add(ftweet); 
+                          else
+                          {
+                            
+                              //if size is larger than i need to check incoming tweet is recent one then 
+                              if(ftweet.createdAt>pq.peek().createdAt)
+                              {
+                                  pq.poll();
+                                  pq.add(ftweet);
+                              }
+                          }
+                      }
+                  }
+              }
+        }
+        List<Integer> result = new ArrayList<>();
+        while(!pq.isEmpty())
+        {
+            result.add(0,pq.poll().id);
+        }
+      return result;
+    }
+    
+    /** Follower follows a followee. If the operation is invalid, it should be a no-op. */
+    public void follow(int followerId, int followeeId) {
+        if(!followed.containsKey(followerId))
+             followed.put(followerId, new HashSet<>());
+        followed.get(followerId).add(followeeId);
+    }
+    
+    /** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
+    public void unfollow(int followerId, int followeeId) {
+        //second cond tells that i dont want to unfollow myself
+        if(followed.containsKey(followerId) && followeeId!=followerId)
+        followed.get(followerId).remove(followeeId); 
+    }
+}
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter obj = new Twitter();
+ * obj.postTweet(userId,tweetId);
+ * List<Integer> param_2 = obj.getNewsFeed(userId);
+ * obj.follow(followerId,followeeId);
+ * obj.unfollow(followerId,followeeId);
+ */
