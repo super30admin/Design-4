@@ -1,3 +1,14 @@
+/*
+// Time Complexity : O(nlogn) n -> no of tweets (sorting)
+// Space Complexity : O(m*n) m-> no of unique users, n -> no. of unique tweets
+// Did this code successfully run on Leetcode : Yes
+// Any problem you faced while coding this : No
+
+// Approach :
+// 1. A mapping is required for followers and followees which is taken care by userFollows map in this case where key(user) follows value(users)
+// 2. When a tweet is posted, the timestamp needs to increase as well as that tweet entry must be made in a map corresponding to the user who tweeted. userTweets map takes care of this.
+// 3. For getting the latest 10 tweets, sortng is required. Tweets from all the users who are followed by a particular user are sorted and top 10 tweet Ids are returned (using iterator).
+*/
 class Twitter {
     
     class Tweet {

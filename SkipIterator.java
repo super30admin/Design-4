@@ -1,3 +1,14 @@
+// Time Complexity : O(1)
+// Space Complexity : O(n) n -> no. of elements to be skipped
+// Did this code successfully run on Leetcode : Yes // Ran on eclipse
+// Any problem you faced while coding this : No
+
+// Approach :
+/*
+
+The skip iterator should work in a similar fashion as a normal iterator. The only difference is that we need to keep track of the values to be skipped.
+To keep track of the skip numbers, map data structure is used to map value and corresponding count.
+A seekCursor function is used for placing the cursor at the right position everyti
 import java.util.*;
 
 class SkipIterator implements Iterator<Integer> {
