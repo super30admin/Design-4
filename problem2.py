@@ -11,12 +11,17 @@ class Twitter:
         """
         Initialize your data structure here.
         """
+        #   initialize user's info if not present already
+        #   Time Complexity:    O(1)
+        #   Space Complexity:   O(1)
         self.timestamp = 0
         self.feedsize = 10
         # userFollowsMap, userTweetMap
         self.userTweetMap = {}
         self.userFollowsMap = {}
 
+        #   Time Complexity:    O(1)
+        #   Space Complexity:   O(1)
     def postTweet(self, userId: int, tweetId: int) -> None:
         """
         Compose a new tweet.
@@ -27,10 +32,14 @@ class Twitter:
 
         self.userTweetMap[userId].append(Tweet(tweetId, self.timestamp))
 
+    #   Time Complexity:    O(NlogN) -> N is total tweets user and its followers have
+    #   Space Complexity:   O(N)     -> N is total tweets user and its followers have
+
     def getNewsFeed(self, userId: int) -> List[int]:
         """
         Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent.
         """
+
         self.isFirstTime(userId)
 
         feeds = []
@@ -50,6 +59,8 @@ class Twitter:
 
         return topFeeds
 
+    #   Time Complexity:    O(1)
+    #   Space Complexity:   O(1)
     def follow(self, followerId: int, followeeId: int) -> None:
         """
         Follower follows a followee. If the operation is invalid, it should be a no-op.
