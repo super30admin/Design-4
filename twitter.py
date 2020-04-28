@@ -1,102 +1,86 @@
 """
-// Time Complexity : O(1)
-// Space Complexity : O(n + m) n-> userss, m-> tweets
+// Time Complexity : O(n) // newfeed nlogk(k is constant)
+// Space Complexity : O(m+ n) //tweets + users
 // Did this code successfully run on Leetcode : No
-// Any problem you faced while coding this : 
-I think my condition for updating the newsfeed might be wrong
+// Any problem you faced while coding this : No
 // Your code here along with comments explaining your approach
 Algorithm explanation
 Using dictionary to track the tweets for users and also the users tracking
 of following 
+
+Newsfeed -> 
+    Get the tweets for the user and followee users
+    Use min heap on the tweets with negative timestamp to get the most recent
+tweet at the top
 """
 
 from collections import defaultdict
+import heapq
+
+class Tweet:
+    def __init__(self,id,created_at):
+        self.id = id
+        self.created_at = created_at
 
 class Twitter:
-    """
-    Users
-    id         name
-    1          uname
-    
-    Tweet
-    id  text         userid
-    1   "terer"      u1
-    
-    Follow table - Many to Many
-    userid1   userid2     bool
-    1         2           True
-    1         3           True
-    2         1           True
-    3         2           False
-    
-    Newsfeed
-    id  tweetid    content         
-    1   1          test nf1        
-    2   2          test nf2
-    
-    Data structures
-    - Stack
-        - []
-    - Graph
-    
-    
-    
-    
-    Track data 
-        - list of tweets
-        - list of users
-        - followed users
-        - unfollowed users
-    
-    
-    u1,t1,
-    u1:[t1,t2,t3,t4,t5]
-    """
-
-    
     def __init__(self):
         """
         Initialize your data structure here.
         """
         self.tweets = defaultdict(list) #storing list of tweets for user
-        self.users = defaultdict(int)  #storing the mapping of following for users
-        
+        self.users = defaultdict(set)  #storing the mapping of following for users
+        self.timestamp = 0
+        self.feed_size = 10
 
     def postTweet(self, userId: int, tweetId: int) -> None:
         """
         Compose a new tweet.
         """
-        self.tweets[userId].append(tweetId)
+        #follow self
+        self.users[userId].add(userId)
         
+        self.timestamp+=1
+        self.tweets[userId].append(Tweet(tweetId,self.timestamp))
 
     def getNewsFeed(self, userId: int) -> List[int]:
         """
         Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent.
         """
-        news = []
-        followee_id = self.users[userId]
-        tweets1 = self.tweets[followee_id]
-        tweets2 = self.tweets[userId]
+        followd_ids = self.users[userId]
+        tweet_q = []
+        feeds = []
+        if followd_ids:
+            for user in followd_ids:
+                tweets = self.tweets[user]
+                if tweets:
+                    i = 0
+                    #heapify all the tweets
+                    for tweet in tweets:
+                        heapq.heappush(tweet_q,(-tweet.created_at,tweet.id))
+        i = 0
+        #fetch the top 10 tweets after heapifying on created_at
+        while tweet_q and i < self.feed_size:
+            ele = heapq.heappop(tweet_q)
+            feeds.append(ele[1])
+            i+=1
         
-        news = tweets1 + tweets2
-        return news[:10]
-        # for tweet in self.tweets[userId][:10]:
-        #     if userId in self.users:
-        #         news.append(tweet)
-        # return news
+        return feeds
         
     def follow(self, followerId: int, followeeId: int) -> None:
         """
         Follower follows a followee. If the operation is invalid, it should be a no-op.
         """
-        self.users[followerId] = followeeId
+        # if followerId not in self.users:
+        #     self.users[followerId].add(followerId)
+        self.users[followerId].add(followeeId)
         
 
     def unfollow(self, followerId: int, followeeId: int) -> None:
         """
         Follower unfollows a followee. If the operation is invalid, it should be a no-op.
         """
-        del self.users[followerId]
+        if followerId in self.users and followerId!=followeeId:
+            self.users[followerId].discard(followeeId)
         
 
 # Your Twitter object will be instantiated and called as such:
