@@ -1,34 +1,36 @@
 #Problem 2: Implement SkipIterator
-#time Complexity: for next and has_next O(skips)
-#Space Complexity: O(n), n numbers
+#time Complexity: O(skips) for next and O(1) has_next and skip
+#Space Complexity: O(n), skip_bank
 '''
-We keep a skip_bank, if the element is in
-skip_bank we go to the next one, until we
-it's not or we get an error. for has_next
-we create a fake copy of my skip_bank
-and check how far we can go from the present
-index. If I reach the end without a valid one
-(unskipped) I return False
+We keep a skip_bank. When we call next,
+we return what we're pointing at and move to the 
+next valid number (with skip_bank). everytime we skip
+a number we decrement it's value in the bank.
+As long as we are pointing at something, has_next return true
+if we skip a number that is equal to the value we are at now 
+we advance and don't do anything else. If it's not, we 
+increment the skip bank for that value
 '''
 class SkipIterator:
-
+    
     def __init__(self,nums):
         self.nums=nums
         self.i=0
         self.skip_bank=collections.defaultdict(int)
+    def advance():
+        n=self.nums[self.i]
+        while self.skip_bank[n] and self.i<len(self.nums):
+            skip_bank[n]-=1
+            self.i+=1
+            n=self.nums[self.i]
     def next():
-        n=self.nums[self.i+1]
-        while skip_bank[n]:
-            skip_bank-=1
-            n=self.nums[i+1]
-        return n
+        to_return=self.nums[self.i]
+        self.advance()
+        return to_return
+        
     def has_next():
-        curr=self.i
-        fake=self.skip_bank.copy()
-        while curr<len(self.nums):
-            if fake[self.nums[curr]]:
-                fake[self.nums[curr]]-=1
-                curr+=1
-                continue
-            return True
-        return False
+        return (self.i<len(self.nums))
+    
+    def skip(val):
+        if val==self.nums[self.i]:self.advance()
+        else: self.skip_bank[val]+=1
