@@ -1,4 +1,4 @@
-// Time Complexity :O(1) 
+// Time Complexity :O(1) we can neglect the sorting part in getfeed because it has constant space 
 // Space Complexity :O(n+m)  n is  users and m is  tweets.
 // Did this code successfully run on Leetcode :yes
 // Any problem you faced while coding this :no
