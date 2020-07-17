@@ -2,84 +2,92 @@
 //Space Complexity: O(m*n) where m is no of unique users, n is no. of unique tweets
 // Any problem you faced while coding this : Followed the lecture.
 
-import java.util.*;
+class designTwitter {
+    
+    HashMap<Integer, HashSet<Integer>> following;
+    HashMap<Integer, List<Tweet>> tweets;
+    int timeStamp;
+    int feedSize;
+    
+    class Tweet {
+        int tweetId;
+        int createdAt;
+        
+        public Tweet(int tweetId, int createdAt) {
+            this.tweetId = tweetId;
+            this.createdAt = createdAt;
+        }
+    }
 
-class SkipIterator implements Iterator<Integer> {
-
-	HashMap<Integer, Integer> skipMap;
-	Iterator<Integer> it;
-	Integer nextel;
-
-	public SkipIterator(Iterator<Integer> it) {
-		skipMap = new HashMap<>();
-		this.it = it;
-		advance();
-	}
-
-	private void advance() {
-		nextel = null;
-		while (nextel == null && it.hasNext()) {
-			Integer el = it.next();
-			if (!skipMap.containsKey(el)) {
-				nextel = el;
-			} else {
-				skipMap.put(el, skipMap.get(el) - 1);
-				skipMap.remove(el, 0);
-			}
-		}
-	}
-
-	public boolean hasNext() {
-		return nextel != null;
-	}
-
-	public Integer next() {
-		int temp = nextel;
-		advance();
-		return temp;
-	}
-
-
-
-	/**
-	* The input parameter is an int, indicating that the next element equals 'val' needs to be skipped.
-	* This method can be called multiple times in a row. skip(5), skip(5) means that the next two 5s should be skipped.
-	*/ 
-
-	public void skip(int val) {
-		if (val == nextel) {
-			advance();
-		} else {
-			skipMap.put(val, skipMap.getOrDefault(val, 0) + 1);
-		}
-	}
-
-	public static void main(String[] args) {
-		SkipIterator itr = new SkipIterator(Arrays.asList(2, 3, 5, 6, 5, 7, 5, -1, 5, 10).iterator());
-
-		System.out.println(itr.hasNext()); // true
-
-		System.out.println(itr.next()); // returns 2
-
-		itr.skip(5);
-
-		System.out.println(itr.next()); // returns 3
-
-		System.out.println(itr.next()); // returns 6 because 5 should be skipped
-
-		System.out.println(itr.next()); // returns 5
-
-		itr.skip(5);
-
-		itr.skip(5);
-
-		System.out.println(itr.next()); // returns 7
-
-		System.out.println(itr.next()); // returns -1
-
-		System.out.println(itr.next()); // returns 10
-
-		System.out.println(itr.hasNext()); // false
-
-	}
+    /** Initialize your data structure here. */
+    public Twitter() {
+        following = new HashMap<>();
+        tweets = new HashMap<>();
+        timeStamp = 0;
+        feedSize = 10;
+    }
+    
+    /** Compose a new tweet. */
+    public void postTweet(int userId, int tweetId) {
+        follow(userId, userId);
+        if (!tweets.containsKey(userId)) {
+            tweets.put(userId, new ArrayList<>());
+        }
+        tweets.get(userId).add(new Tweet(tweetId, timeStamp++));
+    }
+    
+    /** Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be 
+    posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to 
+    least recent. */
+    public List<Integer> getNewsFeed(int userId) {
+        PriorityQueue<Tweet> pq = new PriorityQueue<>((a, b) -> a.createdAt - b.createdAt);
+        Set<Integer> fIds = following.get(userId);
+        if (fIds != null) {
+            for (Integer fId : fIds) {
+                List<Tweet> fTweets = tweets.get(fId);
+                if (fTweets != null) {
+                    for (Tweet fTweet : fTweets) {
+                        if (pq.size() < feedSize) {
+                            pq.offer(fTweet);    
+                        }
+                        else {
+                            if (fTweet.createdAt > pq.peek().createdAt) {
+                                pq.poll();
+                                pq.offer(fTweet);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        List<Integer> ans = new ArrayList<>();
+        while (!pq.isEmpty()) {
+            ans.add(0, pq.poll().tweetId);
+        }
+        return ans;
+    }
+    
+    /** Follower follows a followee. If the operation is invalid, it should be a no-op. */
+    public void follow(int followerId, int followeeId) {
+        if (!following.containsKey(followerId)) {
+            following.put(followerId, new HashSet<>());
+        }    
+        following.get(followerId).add(followeeId);
+    }
+    
+    /** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
+    public void unfollow(int followerId, int followeeId) {
+        if (following.containsKey(followerId) && followerId != followeeId) {
+            following.get(followerId).remove(followeeId);
+        }
+    }
 }
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter obj = new Twitter();
+ * obj.postTweet(userId,tweetId);
+ * List<Integer> param_2 = obj.getNewsFeed(userId);
+ * obj.follow(followerId,followeeId);
+ * obj.unfollow(followerId,followeeId);
+ */
