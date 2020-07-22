@@ -1,3 +1,7 @@
+// Time Complexity : O(m+n) m- number of users n- average number of tweets
+// Space Complexity : O(1)
+// Did this code successfully run on Leetcode : Yes
+//https://leetcode.com/problems/design-twitter/
 class Twitter {
     class Tweet
     {
