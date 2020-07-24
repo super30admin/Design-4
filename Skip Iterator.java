@@ -72,3 +72,23 @@ public class Main {
 }
 
 
+/*
+//Output
+Finished in N/A
+true
+2
+true
+3
+true
+6
+5
+7
+-1
+10
+false
+
+java.lang.NullPointerException
+  at line 66, SkipIterator.next
+  at line 111, Main.main
+
+*/
