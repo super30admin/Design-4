@@ -1,3 +1,5 @@
+//TC: postTweet: O(1), getNewsFeed: O(followers*tweets), follow: O(1), unfollow: O(1)
+//SC: O(followers*Tweets)
 class Twitter {
     class Tweet{
         int t_id;
