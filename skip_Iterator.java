@@ -19,6 +19,8 @@ class SkipIterator implements Iterator<Integer> {
         
     }
 
+
+
 	public boolean hasNext() {
 
 	}
