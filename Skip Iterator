@@ -1,0 +1,37 @@
+// time complexity: O(N) : size of the list
+// space complexity: O(N): size of the hashmap
+public class skip_Iterator implements Iterator<Integer> {
+    List<Integer> it;
+    HashMap<Integer, Integer> map;
+    
+    public SkipIterator(List<Integer> it){
+        map =  new HashMap<>();
+        this.it = it;
+    }
+    int index = 0;
+    public boolean hasNext(){
+        if(index >= list.size()) return false;
+        else return true;
+    }
+
+    public Integer next(){
+
+        while(hasNext()){
+            if(! map.containsKey(it.get(index++))){
+            return it.get(index);
+        }
+        else if(map.containsKey(it.get(index))){
+            int freq = map.get(it.get(index));
+            map.put(it.get(index), freq--);
+        }
+        index++;
+    }
+
+    return null;
+}
+    
+
+    public void skip(int val){
+        map.put(val, map.getOrDefault(val, 0)+1);
+    }
+}
