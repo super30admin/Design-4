@@ -1,5 +1,6 @@
 #Time complexity O(N)
 #Space Complexity 0(k) where k elements to skip in Hashmap
+#https://leetcode.com/playground/B8zLCvHL
 
 from collections import defaultdict 
 class SkipIterator:
