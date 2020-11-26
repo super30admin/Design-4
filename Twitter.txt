@@ -1,0 +1,73 @@
+# Time Complexity : O(n) for getNewsFeed, O(1) for follow, O(1) for unfollow, O(1) for postTweet
+# Space Complexity : O(users + tweets)
+# Did this code successfully run on Leetcode : Yes
+
+import heapq
+
+class Tweet:
+    def __init__(self, userId, tweetId, createdAt):
+        self.userId = userId
+        self.tweetId = tweetId
+        self.createdAt = createdAt
+
+class Twitter:
+ 
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.time = 0
+        self.follow_ = collections.defaultdict(set)
+        self.tweets_ = collections.defaultdict(list)
+
+    def postTweet(self, userId: int, tweetId: int) -> None:
+        """
+        Compose a new tweet.
+        """
+        self.time += 1
+        if userId not in self.follow_:
+            self.follow(userId, userId)
+        tweet = Tweet(userId, tweetId, self.time)
+        self.tweets_[userId].append(tweet)
+        return
+
+    def getNewsFeed(self, userId: int) -> List[int]:
+        """
+        Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent.
+        """
+        all_tweets = []
+        userFeed = []
+        heapq.heapify(all_tweets)
+        if userId in self.follow_:
+            for followee in self.follow_[userId]:
+                for each in self.tweets_[followee]:
+                    if len(all_tweets) < 10:
+                        heapq.heappush(all_tweets, (each.createdAt, each.tweetId))
+                    else:
+                        if each.createdAt > all_tweets[0][0]:
+                            heapq.heappop(all_tweets)
+                            heapq.heappush(all_tweets, (each.createdAt, each.tweetId))
+        while all_tweets:
+            curr = heapq.heappop(all_tweets)
+            userFeed.append(curr[1])
+        return reversed(userFeed)
+        
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        """
+        Follower follows a followee. If the operation is invalid, it should be a no-op.
+        """
+        if followerId not in self.follow_:
+            self.follow_[followerId].add(followerId)
+        self.follow_[followerId].add(followeeId)
+        return
+
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        """
+        Follower unfollows a followee. If the operation is invalid, it should be a no-op.
+        """
+        # if followerId in self.follow_ and followeeId in self.follow_[followerId]:
+        if followerId != followeeId:
+            if followerId in self.follow_ and followeeId in self.follow_[followerId]:
+                self.follow_[followerId].remove(followeeId)
+        return
