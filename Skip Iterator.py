@@ -27,10 +27,29 @@ class SkipIterator:
         return temp
     
     def skip(self, k):
-        self.map[k] = self.map.get(k, 0) + 1
+        if self.curr == k:
+            self.curr = None
+            self.hasNext()
+        else:
+            self.map[k] = self.map.get(k, 0) + 1
         return
 
-#Driver Code
+#Driver Code 1
+itr = SkipIterator([2, 2, 3, 5, 6, 5, 8, 5])
+print(itr.hasNext()) # true
+print(itr.skip(2))
+print(itr.skip(2))
+print(itr.next()) # returns 3
+print(itr.skip(5))
+print(itr.next()) # returns 6
+print(itr.next()) # returns 5
+print(itr.skip(5))
+print(itr.next()) #returns 8
+print(itr.hasNext()) # false
+print(itr.next()) # error
+
+#Driver Code 2
+"""
 itr = SkipIterator([2, 3, 5, 6, 5, 7, 5, -1, 5, 10])
 print(itr.hasNext()) # true
 print(itr.next()) # returns 2
@@ -45,3 +64,4 @@ print(itr.next()) # returns -1
 print(itr.next()) # returns 10
 print(itr.hasNext()) # false
 print(itr.next()) # error
+"""
