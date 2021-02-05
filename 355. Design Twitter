@@ -1,0 +1,97 @@
+from collections import defaultdict, deque
+import heapq
+class Twitter:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        # create a usertweet hashmap to store the tweets(time, tweetid) of corresponding user
+        self.usertweethashmap = defaultdict(list)
+        
+        # create a userfollowhashmap to store the followers of a user
+        self.userfollowhashmap = defaultdict(set)
+        # initialize a timer, which tracks the time stamp
+        self.time = 0
+        
+
+    def postTweet(self, userId: int, tweetId: int) -> None:
+        """
+        Compose a new tweet.
+        """
+        # push the tweet into a corresponding users stack
+        self.usertweethashmap[userId].append((self.time, tweetId));
+        # increment the timer
+        self.time += 1;
+        
+        
+        
+
+    def getNewsFeed(self, userId: int) -> List[int]:
+        """
+        Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent.
+        """
+        # initialize the min heap
+        queue = [];
+        heapq.heapify(queue)
+        
+        # retrieve the followers of a user
+        followerlist = self.userfollowhashmap[userId]
+        followerlist.add(userId)
+        #print('followers are',followerlist)
+        
+        # iterate through the followers of a user and go through the tweers of a user and push into heap
+        
+        for userid in followerlist:
+            for t, id in self.usertweethashmap[userid]:
+                # if the size of the heap is less than 10, push the tweet inot the heap
+                if(len(queue) < 10):
+                    heapq.heappush(queue, (t,id));
+                
+                else:
+                    # push the tweet into the heap only if the current tweet time is greater than top of the heap
+                    if(t > queue[0][0]):
+                        heapq.heappop(queue);
+                        heapq.heappush(queue, (t,id));
+                        
+        result = []
+        # pop the 10 most recent tweets in the heap
+        while(queue):
+            t, id = heapq.heappop(queue);
+            result.append(id);
+        return result[::-1];
+                    
+                    
+        
+        
+        
+        
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        """
+        Follower follows a followee. If the operation is invalid, it should be a no-op.
+        """
+        self.userfollowhashmap[followerId].add(followeeId);
+        
+
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        """
+        Follower unfollows a followee. If the operation is invalid, it should be a no-op.
+        """
+        if(followeeId in self.userfollowhashmap[followerId]):
+            self.userfollowhashmap[followerId].remove(followeeId);
+
+            '''
+            n = number of tweets of all the followers of a user
+            k = 10
+            time complexity = O(nlogk)
+            v = number of users, E = number of relations or number of tweets
+            space complexity = O(v+ E)
+            '''
+
+# Your Twitter object will be instantiated and called as such:
+# obj = Twitter()
+# obj.postTweet(userId,tweetId)
+# param_2 = obj.getNewsFeed(userId)
+# obj.follow(followerId,followeeId)
+# obj.unfollow(followerId,followeeId)
