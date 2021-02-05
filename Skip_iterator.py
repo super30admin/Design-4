@@ -1,3 +1,7 @@
+# Time: O(1)
+# Space: O(1)
+
+
 class SkipIterator:
 
     def __init__(self, iterator):
@@ -9,14 +13,11 @@ class SkipIterator:
 
     def hasNext(self) -> bool:
 
-        #   Time Complexity:    O(1)
-        #   Space Complexity:   O(1)
+  
         return (self.cursor != None)
 
     def next(self) -> int:
-
-        #   Time Complexity:    O(1)
-        #   Space Complexity:   O(1)
+		
         element = self.cursor
         self.__seekCursor()
         return element
@@ -42,20 +43,21 @@ class SkipIterator:
         #   Space Complexity:   O(n) in the worst case as described above
         self.cursor = None
 
-        nextValue = next(self.iterator, None)               #   initialize the next value
-
-        while(self.cursor == None and  nextValue != None):  #   if cursor is not None or if nextValue is None => break the loop
+        nextValue = next(self.iterator, None)             
+	# if cursor is not None or if nextValue is None => break the loop
+        while(self.cursor == None and  nextValue != None):  
             element = nextValue
-
-            if (element not in self.skipMap):               #   if element not in HashMap => assign cursor to that element and break
+	    # if element not in HashMap => assign cursor to that element and break
+            if (element not in self.skipMap):               
                 self.cursor = element
                 break
-            else:                                           #   else update the count, move forward and remove the key if value is 0
+	  # else update the count, move forward and remove the key if value is 0
+            else:                                          
                 self.skipMap[element] -= 1
                 if (self.skipMap[element] == 0):
                     del self.skipMap[element]
 
-            nextValue = next(self.iterator, None)           #   update the next value
+            nextValue = next(self.iterator, None)          
 
 
 itr = SkipIterator(iter([2, 3, 5, 6, 5, 7, 5, -1, 5, 10]))
