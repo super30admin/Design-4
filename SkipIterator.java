@@ -12,31 +12,31 @@ class SkipIterator implements Iterator<Integer> {
     Integer nextInt;
 	
 	public SkipIterator(Iterator<Integer> iterator) {
-        map = new HashMap<>();
-        this.iterator = iterator;
-        handleNext();
+		map = new HashMap<>();
+		this.iterator = iterator;
+		handleNext();
 	}
 
 	public boolean hasNext() {
 
-        return nextInt != null;
+        	return nextInt != null;
 	}
 
 	public Integer next() {
 
-        Integer result = nextInt;
-        handleNext();
-        return result;
+		Integer result = nextInt;
+		handleNext();
+		return result;
 	}
 
 
 	public void skip(int val) {
-        if(val == nextInt)
-        {
-            handleNext();
-        }else{
-           map.put(val, map.getOrDefault(val,0)+1);    
-        }
+		if(val == nextInt)
+		{
+		    handleNext();
+		}else{
+		   map.put(val, map.getOrDefault(val,0)+1);    
+		}
 
 	}
 
