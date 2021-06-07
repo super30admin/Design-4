@@ -1,3 +1,22 @@
+/*
+Intuition: Make a count of the numbers to be skip using a map.
+
+#####################################################################
+next Method: Getting the next element
+Time Complexity : O(N)
+#####################################################################
+hasNext Method: Checking if the next element is null or not which is set by the advance() method
+Time Complexity : O(1)
+#####################################################################
+skip Method: Adding a number to the hashmap
+Time Complexity : O(1)
+#####################################################################
+advance Method: Has to iterate through the elements
+Time Complexity : O(N)
+#####################################################################
+Total Space Complexity: O(N), N = total numbers of elements to be skipped
+*/
+
 class SkipIterator{
     public:
         int nextEl = NULL;
