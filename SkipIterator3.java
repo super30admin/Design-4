@@ -1,3 +1,5 @@
+//Time Complexity : Skip: O(n), Next: O(n), HasNext: O(1); n = Total no of elements in the list
+// Space Complexity : O(n)
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -5,8 +7,8 @@ import java.util.List;
 
 public class SkipIterator3{
     public static void main(String[] args) {
-        List<Integer> nums = Arrays.asList(2, 5, 6, 5, 7, 5, -1, 5, 10);
-        SkipIterator itr = new SkipIterator(nums.iterator());
+        List<Integer> arr = Arrays.asList(2, 5, 6, 5, 7, 5, -1, 5, 10);
+        SkipIterator itr = new SkipIterator(arr.iterator());
         System.out.println(itr.hasNext()); // true
         System.out.println(itr.next()); // returns 2
         itr.skip(5);
