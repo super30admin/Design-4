@@ -32,7 +32,7 @@
             public Tweet(int tId, int createdAt)
             {
                 this.tId = tId;
-                this.createdAt = this.createdAt;
+                this.createdAt = createdAt;
                 
             }
             
@@ -44,10 +44,10 @@
         
         
         /** Initialize your data structure here. */
-        public Twitter() {
+        public DesignTwitter() {
             
-            followMap = new HashMap();
-            tweetMap = new HashMap();
+            followMap = new HashMap<>();
+            tweetMap = new HashMap<>();
             
             
         }
