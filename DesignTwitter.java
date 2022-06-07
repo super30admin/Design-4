@@ -34,7 +34,7 @@ class Twitter {
         tweets.get(userId).add(new Tweet(tweetId, time++));
     }
 
-    public List<Integer> getNewsFeed(int userId) { // Time: O(No of subscribers * No of tweets with each subscribers) + O(All the collected tweets) | Space: O(10) - as we are maintaining only top 10
+    public List<Integer> getNewsFeed(int userId) { // Time: O(No of subscribers * No of tweets with each subscribers * log 10) + O(All the collected tweets) | Space: O(10) - as we are maintaining only top 10
         List<Integer> result = new ArrayList<>();
         // if user does not have any followees list yet, there's nothing to retrieve on the wall
         if(!follows.containsKey(userId)) return result;
