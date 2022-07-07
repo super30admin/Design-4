@@ -3,8 +3,9 @@
 // Did this code successfully run on Leetcode : Yes
 // Any problem you faced while coding this :
 """
-
 import heapq
+
+
 class Tweet:
     def __init__(self, tweetId, timestamp):
         self.tweetId = tweetId
@@ -46,9 +47,9 @@ class Twitter:
         returnList = []
 
         for i in range(0, len(heap)):
-            returnList.append(heapq.heappop(heap).tweetId)
+            returnList.insert(0, heapq.heappop(heap).tweetId)
 
-        returnList = returnList[-1::-1]
+        # returnList = returnList[::-1]
 
         return returnList
 
