@@ -1,11 +1,9 @@
-""""// Time Complexity : O(1)
+""""// Time Complexity : follow, unfollow, postTweet: O(1); getNewsFeed: O(n*log(k))=O(n) as k is constant
 // Space Complexity :O(n)
 // Did this code successfully run on Leetcode : Yes
 // Any problem you faced while coding this :
 """
 import heapq
-
-
 class Tweet:
     def __init__(self, tweetId, timestamp):
         self.tweetId = tweetId
