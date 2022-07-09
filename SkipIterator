@@ -1,0 +1,68 @@
+// TC : Next() - O(N), hasNext() - O(1), skip() - O(N) 
+// SC : O(N)
+
+
+class SkipIterator implements Iterator<Integer> {
+    Integer nextElement;
+    HashMap<Integer, Integer> map; 
+    Iterator<Integer> it;
+    public SkipIterator(Iterator<Integer> it) {
+	    this.map = new HashMap<>();
+        this.it = it;
+        
+        advance(); 
+    }
+
+	public boolean hasNext() { 
+        return nextElement != null;
+	}
+
+	public Integer next() {
+        Integer data = nextElement;
+        advance(); 
+        
+        return data; 
+	}
+
+
+	public void skip(int val) { 
+        if(val != nextElement){
+            map.put(val, map.getOrDefault(val, 0) + 1);
+        }else{
+            advance(); 
+        }
+	}
+    public void advance(){ 
+        this.nextElement = null;
+        
+        while(it.hasNext() && nextElement == null){
+            Integer temp = it.next();
+            if(map.containsKey(temp)){
+                map.put(temp, map.get(temp) - 1);
+                map.remove(temp, 0);
+            }else{
+                nextElement = temp;
+            }
+        }
+    }
+}
+
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+
+        SkipIterator s = new SkipIterator(Arrays.asList(5,6,7,5,6,8,9,5,5,6).iterator());
+        
+        System.out.println(s.hasNext());
+        
+        s.skip(6); s.skip(5);
+        System.out.println(s.next());
+        s.skip(5);
+        
+        System.out.println(s.next());
+        System.out.println(s.next());
+        s.skip(5);
+        s.skip(8);
+        }
+}
