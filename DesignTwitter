@@ -1,0 +1,67 @@
+//TC - O(ut) - user * tweets
+//SC - O(ut) - user * tweets
+class Twitter {
+    class Tweet{
+        int id;
+        int createdAt;
+        public Tweet(int id, int createdAt){
+            this.id = id;
+            this.createdAt = createdAt;
+        }
+    }
+    HashMap<Integer,List<Tweet>> tweets;
+    HashMap<Integer,Set<Integer>> followed;
+    int time;
+    public Twitter() {
+        this.tweets = new HashMap<>();
+        this.followed = new HashMap<>();
+    }
+    
+    public void postTweet(int userId, int tweetId) {
+       
+        if(!tweets.containsKey(userId)){
+            tweets.put(userId, new ArrayList<>());
+        }
+        follow(userId, userId);
+        tweets.get(userId).add(new Tweet(tweetId, time++));
+    }
+    
+    public List<Integer> getNewsFeed(int userId) {
+        PriorityQueue<Tweet> pq = 
+            new PriorityQueue<>((a,b) -> a.createdAt - b.createdAt);
+        Set<Integer> followeds = followed.get(userId);
+        if(followeds != null){
+            for(int uid: followeds){
+                List<Tweet> ftweets = tweets.get(uid);
+                if(ftweets != null){
+                    for(Tweet ftweet: ftweets){
+                        pq.add(ftweet);
+                        if(pq.size() > 10){
+                            pq.poll();
+                     }
+                  }    
+               }
+            }
+        }
+        List<Integer> data = new ArrayList<>();
+        while(!pq.isEmpty()){
+           Tweet temp = pq.poll(); 
+            data.add(0, temp.id);
+        }
+        return data;
+    }
+    
+    public void follow(int followerId, int followeeId) {
+        if(!followed.containsKey(followerId)){
+            followed.put(followerId, new HashSet<>());
+        }
+        followed.get(followerId).add(followeeId);
+    }
+    
+    public void unfollow(int followerId, int followeeId) {
+          if(followed.containsKey(followerId) && followerId != followeeId){
+            followed.get(followerId).remove(followeeId);
+        }
+    }
+}
+
