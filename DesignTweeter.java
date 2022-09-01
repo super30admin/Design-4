@@ -1,3 +1,8 @@
+// Time Complexity : o(nlogk)
+// Space Complexity : o(logk)
+// Did this code successfully run on Leetcode : yes
+// Any problem you faced while coding this : no
+
 class Twitter {
     class Tweet{
         int tid;
