@@ -1,5 +1,5 @@
-// Time Complexity : o(n)
-// Space Complexity : o(n)
+// Time Complexity : o(n) n -- total no of elements to be skipped
+// Space Complexity : o(N)  N -- total no of elements in List
 // Did this code successfully run on Leetcode : yes
 // Any problem you faced while coding this : no
 
