@@ -25,6 +25,7 @@ class Twitter:
     
     # This function will post the tweet
     # Follow the user to itself to ease the extraction of tweets of user as well along with its followers
+    # Time complexity : O(1)
     def postTweet(self, userId: int, tweetId: int) -> None:
         self.follow(userId, userId)
         # if userId is not presne in the tweets Hashmap, then put an empty list to start appending
@@ -35,6 +36,7 @@ class Twitter:
         # add the tweet object (tweetId and time) to the tweet hashmap and store it with userId as the key
         self.tweets[userId].append(self.Tweet(tweetId, self.time))
 
+    # Time complexity : O(n) --> n = total number of tweets for the userId and it's followers
     def getNewsFeed(self, userId: int) -> List[int]:
         # using the queue to store the elements out of the heap
         res = collections.deque()
@@ -72,6 +74,7 @@ class Twitter:
         return res
 
     # if followerId is not present in the followed Hashmap, then create an empty set for the followerId to avoid duplicates
+    # Time complexity : O(1)
     def follow(self, followerId: int, followeeId: int) -> None:
         if followerId not in self.followed :
             self.followed[followerId] = set()
@@ -79,6 +82,7 @@ class Twitter:
         self.followed[followerId].add(followeeId)
 
     # To unfollow a user, we find if the userId of the follower is present in the Hashmap and also the two ids is not same
+    # Time complexity : O(1)
     def unfollow(self, followerId: int, followeeId: int) -> None:
         if followerId in self.followed and followeeId != followerId:
             # if the followeeId is present in the Hashmap, then remove it from the Hashmap, for the followerId
