@@ -10,16 +10,19 @@ class SkipIterator:
         self.seek_next() # to fetch the next element
        
     # check if the list has a next element
+    # Time complexity : O(1)
     def hasNext(self):
         return (self.cursor != None)
     
     # print the next element in the list and also find the next pointing element if present
+    # Time complexity : O(1)
     def next(self):
         element = self.cursor
         self.seek_next()
         return element
     
-    # makign a skip List to keep track of elements to tbe skipped 
+    # makign a skip List to keep track of elements to tbe skipped
+    # Time complexity : O(1)
     def skip(self, val):
         # edge case, if the current element is to be skipped, then we fetch the next element and make it current
         if self.cursor == val:
@@ -31,6 +34,7 @@ class SkipIterator:
                 self.skipMap[val] = 1
     
     # to seek the next element, fetch the next element using native iterator
+    # Time complexity : O(n)
     def seek_next(self):
         self.cursor = None
         
