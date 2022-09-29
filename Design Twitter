@@ -1,0 +1,54 @@
+class Twitter:
+
+    def __init__(self):
+        self.c = 0
+        self.follower_followees_set_map = collections.defaultdict(set)
+        self.user_tweets_map = collections.defaultdict(list)
+
+    def postTweet(self, userId: int, tweetId: int) -> None:
+        self.user_tweets_map[userId].append((self.c, tweetId))
+        self.c += 1
+
+    def getNewsFeed(self, userId: int) -> List[int]:
+        self.follow(userId, userId)
+        recent_tweets = []
+        max_heap = []
+        
+        for followee_id in self.follower_followees_set_map[userId]:
+            if followee_id in self.user_tweets_map:
+                recent_tweet_index = len(self.user_tweets_map[followee_id]) - 1
+                c, tweet_id = self.user_tweets_map[followee_id][recent_tweet_index]
+                max_heap.append((-c, tweet_id, followee_id, recent_tweet_index - 1))
+
+        heapq.heapify(max_heap)
+        while max_heap and len(recent_tweets) < 10:
+            _, tweet_id, followee_id, recent_tweet_index = heapq.heappop(max_heap)
+            recent_tweets.append(tweet_id)
+            if recent_tweet_index >= 0:
+                c, tweet_id = self.user_tweets_map[followee_id][recent_tweet_index]
+                heapq.heappush(
+                    max_heap, (-c, tweet_id, followee_id, recent_tweet_index - 1)
+                )
+
+        return recent_tweets
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        if followeeId not in self.follower_followees_set_map[followerId]:
+            self.follower_followees_set_map[followerId].add(followeeId)
+
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        if followeeId in self.follower_followees_set_map[followerId]:
+            self.follower_followees_set_map[followerId].remove(followeeId)
+
+
+# Your Twitter object will be instantiated and called as such:
+# obj = Twitter()
+# obj.postTweet(userId,tweetId)
+# param_2 = obj.getNewsFeed(userId)
+# obj.follow(followerId,followeeId)
+# obj.unfollow(followerId,followeeId)
+
+# Time Complexity: O(n)
+# Space Complexity: O(m)
+# Sucessfully implemented on Leetcode
+        
