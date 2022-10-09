@@ -23,3 +23,7 @@ class SkipIterator:
     
     def skip(self,val):
         self.hashmap[val]+=1
+        
+# Time Complexity: O(m)
+# Space Complexity: O(n)
+# Sucessfully implemented on Leetcode
