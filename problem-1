@@ -1,0 +1,102 @@
+class Twitter {
+    class Tweet{
+        int tid;
+        int createdAt;
+        public Tweet(int tid,int createdAt){
+            this.tid=tid;
+            this.createdAt=createdAt;
+        }
+    }
+    HashMap<Integer,HashSet<Integer>> hm_user;
+   HashMap<Integer,List<Tweet>> hm_tweet;
+    int time;
+    public Twitter() {
+        hm_user=new HashMap<>();
+        hm_tweet=new HashMap<>(); 
+    }
+    
+    public void postTweet(int userId, int tweetId) {
+        follow(userId,userId);
+        if(!hm_tweet.containsKey(userId)){
+            hm_tweet.put(userId,new ArrayList<>());
+        }
+        List t=hm_tweet.get(userId);
+        t.add(new Tweet(tweetId, time++));
+        hm_tweet.put(userId,t);
+        
+        
+    }
+    
+    public List<Integer> getNewsFeed(int userId) {
+        PriorityQueue<Tweet> pq=new PriorityQueue<>((a,b) -> a.createdAt-b.createdAt);
+        Set<Integer> followeds = hm_user.get(userId);
+
+          if(followeds != null){
+
+              for(int f : followeds){
+
+                  List<Tweet> fTweets = hm_tweet.get(f);
+
+                  if(fTweets == null) continue;
+
+                  for(Tweet t: fTweets){
+
+                      if(pq.size() < 10){
+
+                          pq.add(t);
+
+                      } else {// where my pq is full
+
+                          if(t.createdAt > pq.peek().createdAt){
+
+                              pq.poll();
+
+                              pq.add(t);
+
+                          }
+
+                      }
+
+                  }
+
+              }
+
+          }
+
+          List<Integer> res = new ArrayList<>();
+
+          while(!pq.isEmpty()) res.add(0, pq.poll().tid);
+
+          return res;
+
+        
+    }
+    
+    public void follow(int followerId, int followeeId) {
+        if(!hm_user.containsKey(followerId)){
+            hm_user.put(followerId,new HashSet<>());
+        }
+        HashSet h=hm_user.get(followerId);
+        h.add(followeeId);
+        hm_user.put(followerId,h);
+        
+        
+    }
+    
+    public void unfollow(int followerId, int followeeId) {
+        if(hm_user.containsKey(followerId)){
+        HashSet h=hm_user.get(followerId);
+        h.remove(followeeId);
+        hm_user.put(followerId,h);
+        }
+    }
+}
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter obj = new Twitter();
+ * obj.postTweet(userId,tweetId);
+ * List<Integer> param_2 = obj.getNewsFeed(userId);
+ * obj.follow(followerId,followeeId);
+ * obj.unfollow(followerId,followeeId);
+ */
