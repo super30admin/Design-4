@@ -1,3 +1,6 @@
+#Time Complexity: O(n)
+#Space Complexity: O(m)
+
 from heapq import heapify,heappop,heappush
 
 class Twitter:
