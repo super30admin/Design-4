@@ -1,3 +1,6 @@
+#Time Complexity: O(m)
+#Space Complexity: O(n)
+ 
 class SkipIterator(Iterator):
   def __init__(self, it):
     self._it = it
