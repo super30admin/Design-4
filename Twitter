@@ -1,0 +1,103 @@
+class Twitter {
+    
+    class Tweets{
+        int id;
+        int createdAt;
+        Tweets(int id,int createdAt)
+        {
+            this.id=id;
+            this.createdAt=createdAt;
+        }
+    }
+    int time;
+    HashMap<Integer,HashSet<Integer>> followList;
+    HashMap<Integer,List<Tweets>> tweetList;
+    
+    public Twitter() {
+        
+        followList=new HashMap<>();
+        tweetList=new HashMap<>();
+        time=0;
+        
+    }
+    
+    
+    public void postTweet(int userId, int tweetId) {
+        
+        Tweets tweets=new Tweets(tweetId,time);
+        time++;
+        if(!tweetList.containsKey(userId))
+        {
+            tweetList.put(userId,new ArrayList<>());
+        }
+        
+        tweetList.get(userId).add(tweets);
+        
+    }
+    
+    public List<Integer> getNewsFeed(int userId) {
+        PriorityQueue<Tweets> RecentTweets=new PriorityQueue<>((a,b)->a.createdAt-b.createdAt);
+
+        follow(userId,userId);
+        for(int user : followList.get(userId))
+        {
+            List<Tweets> list=tweetList.get(user);
+            if(list!=null)
+            {
+                for(Tweets tweet : list)
+                {
+                    if(RecentTweets.size()==10)
+                        RecentTweets.poll();
+                    RecentTweets.add(tweet);
+                }
+            }
+        }
+        
+        List<Integer> tweetIds=new ArrayList<>();
+        int size=RecentTweets.size();
+        for(int i=0;i<size;i++)
+        {
+            tweetIds.add(0,RecentTweets.poll().id);
+        }
+        
+        return tweetIds;
+    }
+    
+    public void follow(int followerId, int followeeId) {
+        
+        if(!followList.containsKey(followerId))
+        {
+            followList.put(followerId,new HashSet<>());
+        }
+        
+        followList.get(followerId).add(followeeId);
+        
+        
+    }
+    
+    public void unfollow(int followerId, int followeeId) {
+        
+        if(followList.containsKey(followerId) && followerId!=followeeId)
+        {
+            followList.get(followerId).remove(followeeId);
+        }
+    }
+}
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter obj = new Twitter();
+ * obj.postTweet(userId,tweetId);
+ * List<Integer> param_2 = obj.getNewsFeed(userId);
+ * obj.follow(followerId,followeeId);
+ * obj.unfollow(followerId,followeeId);
+ */
+
+// for Follow, UnFollow, PostTweet
+ // Time Complexity : O(1)
+// Space Complexity : O(1)
+//For GetFeed
+ // Time Complexity : O(FollowCount * PostsByEachUser)
+// Space Complexity : O(1) -- max capacity of heap is constant always
+// Did this code successfully run on Leetcode : yes
+// Any problem you faced while coding this : no
