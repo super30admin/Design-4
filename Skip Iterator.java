@@ -1,3 +1,4 @@
+// TC = hasNext() = O(1), next()= O (n), because of the advance function - O(n)
 
 class SkipIterator implements Iterator<Integer> {
 	Iterator  <Integer> nit;
