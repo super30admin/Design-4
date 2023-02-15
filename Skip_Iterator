@@ -1,0 +1,56 @@
+
+
+
+class SkipIterator implements Iterator {
+
+HashMap<Intege,Integer> skipMap;
+Iterator<Integer> nit;
+Integer nextEle;
+public SkipIterator(Iterator<Integer> it) {
+    
+    this.nit = it;
+    skipMap = new HashMap<>();
+    advance();
+}
+
+//TimeComplexity O(n)
+public void advance(){
+    this.nextEle = null;
+    while(nextEle == null && nit.hasNext()){
+        Integer res = nit.next();
+        if(skipMap.containsKey(res)){
+            skipMap.put(res,skipMap.get(res)-1);
+            if(skipMap.get(res) == 0){
+                skipMap.remove(res);
+            }
+        }else{
+            this.nextEle = res;
+        }
+    }
+}
+//TimeComplexity O(1)
+public boolean hasNext() {
+    return nextEle != null;
+}
+
+//TimeComplexity O(n)
+public Integer next() {
+    Integer res = nextEle;
+    advance();
+    return res;
+}
+
+/**
+* The input parameter is an int, indicating that the next element equals 'val' needs to be skipped.
+* This method can be called multiple times in a row. skip(5), skip(5) means that the next two 5s should be skipped.
+*/
+//TimeComplexity O(n)
+public void skip(int val) {
+    
+    if(val == nextEle){
+        advance();
+    }else{
+        skipMap.put(val,skipMap.putOrDefault(val,0)+1);
+    }
+}
+} 
