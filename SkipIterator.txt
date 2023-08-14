@@ -1,0 +1,78 @@
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Time Complexity - O(n)
+ * Space Complexity - O(n)
+ */
+class SkipIterator implements Iterator<Integer> {
+
+    Map<Integer, Integer> skipMap;
+    Integer next;
+    Iterator<Integer> it;
+
+    public SkipIterator(Iterator<Integer> it) {
+        this.skipMap = new HashMap<>();
+        this.it = it;
+        advance();
+    }
+
+    public boolean hasNext() {
+        return next != null;
+    }
+
+    public Integer next() {
+        Integer res = next;
+        advance();
+        return res;
+    }
+
+    /**
+     * The input parameter is an int, indicating that the next element equals 'val' needs to be skipped.
+     * This method can be called multiple times in a row. skip(5), skip(5) means that the next two 5s should be skipped.
+     */
+    public void skip(int val) {
+        if (val == next) {
+            advance();
+        } else {
+            skipMap.put(val, skipMap.getOrDefault(val, 0) +1);
+        }
+    }
+
+    private void advance() {
+        next = null;
+        while (it.hasNext() && next == null) {
+            Integer res = it.next();
+            if (skipMap.containsKey(res)) {
+                skipMap.put(res, skipMap.get(res) -1);
+                if (skipMap.get(res) == 0) {
+                    skipMap.remove(res);
+                }
+            } else {
+                next = res;
+            }
+        }
+    }
+
+
+    public static void main(String...args) {
+        SkipIterator itr = new SkipIterator(List.of(2, 3, 5, 6, 5, 7, 5, -1, 5, 10).listIterator());
+        itr.hasNext(); // true
+        itr.next(); // returns 2
+        itr.skip(5);
+        itr.next(); // returns 3
+        itr.next(); // returns 6 because 5 should be skipped
+        itr.next(); // returns 5
+        itr.skip(5);
+        itr.skip(5);
+        itr.next(); // returns 7
+        itr.next(); // returns -1
+        itr.next(); // returns 10
+        itr.hasNext(); // false
+        itr.next(); // error
+
+    }
+}
+
