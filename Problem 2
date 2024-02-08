@@ -1,0 +1,61 @@
+#Skip Iterator
+
+#time complexity: O(1)
+#space complexity: O(n)
+
+from collections import defaultdict
+
+class SkipIterator:
+    def __init__(self, iterator):
+        self.iterator = iterator
+        self.skip_count = defaultdict(int)
+        self.nextElement = None
+        self.advance()
+
+    def hasNext(self):
+        return self.nextElement is not None
+
+    def next(self):
+        if not self.hasNext():
+            raise StopIteration()
+        toReturn = self.nextElement
+        self.advance()
+        return toReturn
+
+    def skip(self, val):
+        if not self.hasNext():
+            return
+        if self.nextElement == val:
+            self.advance()
+            self.skip_count[val] += 1
+        else:
+            self.skip_count[val] = self.skip_count.get(val, 0)
+
+    def advance(self):
+        self.nextElement = None
+        while self.nextElement is None:
+            try:
+                num = next(self.iterator)
+                if num not in self.skip_count or self.skip_count[num] == 0:
+                    self.nextElement = num
+                else:
+                    self.skip_count[num] -= 1
+            except StopIteration:
+                return
+
+# Example usage:
+iterator = iter([2, 3, 5, 6, 5, 7, 5, -1, 5, 10])
+skip_iterator = SkipIterator(iterator)
+print(skip_iterator.hasNext())  # True
+print(skip_iterator.next())      # 2
+skip_iterator.skip(5)
+print(skip_iterator.next())      # 3
+print(skip_iterator.next())      # 6
+print(skip_iterator.next())      # 5
+skip_iterator.skip(5)
+skip_iterator.skip(5)
+print(skip_iterator.next())      # 7
+print(skip_iterator.next())      # -1
+print(skip_iterator.next())      # 10
+print(skip_iterator.hasNext())   # False
+# print(skip_iterator.next())    # Raises StopIteration error

@@ -1,0 +1,42 @@
+#Design Twitter
+
+#Tc:O(1)
+#Sc:O(n)
+
+from collections import defaultdict, deque
+from typing import List
+
+class Twitter:
+
+    def __init__(self):
+        self.time = 0
+        self.tweets = defaultdict(deque)
+        self.followees = defaultdict(set)
+
+    def postTweet(self, userId: int, tweetId: int) -> None:
+        self.time += 1
+        self.tweets[userId].appendleft((self.time, tweetId))
+
+    def getNewsFeed(self, userId: int) -> List[int]:
+        tweets = deque(sorted(self.tweets[userId], reverse=True)[:10])
+        for followeeId in self.followees[userId]:
+            tweets.extend(sorted(self.tweets[followeeId], reverse=True)[:10])
+        return [tweetId for time, tweetId in sorted(tweets, reverse=True)[:10]]
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        if followerId != followeeId:
+            self.followees[followerId].add(followeeId)
+
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        if followerId in self.followees and followeeId in self.followees[followerId]:
+            self.followees[followerId].remove(followeeId)
+
+# Test the Twitter class
+twitter = Twitter()
+twitter.postTweet(1, 5)
+print(twitter.getNewsFeed(1))  # Output: [5]
+twitter.follow(1, 2)
+twitter.postTweet(2, 6)
+print(twitter.getNewsFeed(1))  # Output: [6, 5]
+twitter.unfollow(1, 2)
+print(twitter.getNewsFeed(1))  # Output: [5]
