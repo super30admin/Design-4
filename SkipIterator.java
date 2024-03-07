@@ -1,5 +1,11 @@
 // https://leetcode.com/discuss/interview-question/341818
 
+// TC
+// hasNext() - O(1)
+// next() - O(N) => Amortized O(1)
+// skip() - O(N) => Amortized O(1)
+// advance() - O(N) => Amortized O(1)
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
