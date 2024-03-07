@@ -31,7 +31,8 @@ public class DesignTwitter {
         }
 
         public void postTweet(int userId, int tweetId) { // O(1)
-            follow(userId, userId); // Self Follow
+            follow(userId, userId); // Self Follow -> A user might not have followed anyone
+                                    // and still want to see their tweet in feed
             Tweet tweet = new Tweet(tweetId, time);
             if (!tweetsMap.containsKey(userId)) {
                 tweetsMap.put(userId, new ArrayList<>());
