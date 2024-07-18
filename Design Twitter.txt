@@ -1,0 +1,84 @@
+Time Complexity: O(n)
+Space Complexity: O(n)
+Approach: 
+Maintain a followees map and userTweets map. Is User A follows user b and user c they go to followees map as (userA-->[UserB, UserC]). 
+To get the tweets associated with user get the followees and get the top 10 feeds of the user. 
+Use a priorityQueue which is a min heap.Get top 10 news feeds from followes tweets. USer by follow himself to get the feeds associated with him.
+class Twitter {
+    Map<Integer, HashSet<Integer>> followees;
+    Map<Integer, List<Tweet>> userTweets;
+    int time;
+    class Tweet {
+        int tweetId;
+        int timeStamp;   
+        public Tweet(int tweetId, int timeStamp){
+            this.tweetId=tweetId;
+            this.timeStamp=timeStamp;
+        }     
+    }
+
+    public Twitter() {
+        this.followees=new HashMap<>();
+        this.userTweets=new HashMap<>();
+    }
+    //postTweet: O(n)
+    public void postTweet(int userId, int tweetId) {
+        follow(userId, userId); 
+        if(!userTweets.containsKey(userId)){           
+            userTweets.put(userId, new ArrayList<>());
+        }   
+        userTweets.get(userId).add(new Tweet(tweetId, time++));
+    }
+    //O(n)
+    public List<Integer> getNewsFeed(int userId) {
+         PriorityQueue<Tweet> pq = new PriorityQueue<>((a,b)-> a.timeStamp-b.timeStamp);
+         HashSet<Integer> userFollows = followees.get(userId);
+            if(userFollows!=null){            
+                for(Integer followeeId: userFollows){            
+                List<Tweet> allTweets = this.userTweets.get(followeeId);
+                //Optimization for O(N) time instead of O(NlogK): K being size of the heap
+                if(allTweets!=null){            
+                    int startIndex=0;
+                    if(allTweets.size()>10)            
+                    startIndex=allTweets.size()-10;
+                    //ends here
+                    for(int index=startIndex;index<allTweets.size(); index++){
+                        pq.add(allTweets.get(index));
+                        if(pq.size()>10){
+                            pq.poll();
+                        }
+                    }
+            }
+          }         
+         }
+          List<Integer> elements= new ArrayList<Integer>();
+          while(!pq.isEmpty()){
+                elements.add(0, pq.poll().tweetId);
+          }  
+          return elements;
+    }
+    
+    //O(n) 
+    public void follow(int followerId, int followeeId) {          
+        if(!followees.containsKey(followerId)){
+            followees.put(followerId, new HashSet<>());
+        }
+        followees.get(followerId).add(followeeId);
+    }
+    
+	//O(n)
+    public void unfollow(int followerId, int followeeId) {
+        if(followees.containsKey(followerId)){
+            followees.get(followerId).remove(followeeId);
+        }        
+    }
+}
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter obj = new Twitter();
+ * obj.postTweet(userId,tweetId);
+ * List<Integer> param_2 = obj.getNewsFeed(userId);
+ * obj.follow(followerId,followeeId);
+ * obj.unfollow(followerId,followeeId);
+ */
