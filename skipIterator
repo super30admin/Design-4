@@ -1,0 +1,34 @@
+class SkipIterator implements Iterator<Integer> {
+    HashMap<Integer, Integer> skippedElements = new HashMap<>();
+    Iterator<Integer> iterator;
+	public SkipIterator(Iterator<Integer> it) {
+        this.iterator = it;
+	}
+
+    @Override
+	public boolean hasNext() {
+        return iterator.hasNext();
+	}
+
+    @Override
+	public Integer next() {
+        int nextElement = -1;
+        if (!iterator.hasNext()) {
+            return -1;
+        }
+        nextElement = iterator.next();
+        if (skippedElements.containsKey(nextElement)) {
+            skippedElements.put(nextElement, skippedElements.get(nextElement)-1);
+            if (skippedElements.get(nextElement) == 0) {
+                skippedElements.remove(nextElement);
+            }
+            if (!iterator.hasNext()) return -1;
+            return iterator.next();
+        }
+        return nextElement;
+	}
+    
+	public void skip(int val) {
+        skippedElements.put(val, skippedElements.getOrDefault(val, 0)+1);
+	}
+}
