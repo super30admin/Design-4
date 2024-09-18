@@ -1,0 +1,67 @@
+time; O(F * T + 10 log(F * T))
+SPACE ; O(F * T)
+
+
+
+
+class Twitter {
+    class Tweet {
+        int tId;
+        int createdAt;
+
+        public Tweet(int id, int time) {
+            this.tId = id;
+            this.createdAt = time;
+        }
+    }
+
+    private Map<Integer, Set<Integer>> followedMap;
+    private Map<Integer, List<Tweet>> tweetMap; 
+    private int time; 
+
+    public Twitter() {
+        this.followedMap = new HashMap<>();
+        this.tweetMap = new HashMap<>();
+        this.time = 0;
+    }
+
+    public void postTweet(int userId, int tweetId) {
+        if (!tweetMap.containsKey(userId)) {
+            tweetMap.put(userId, new ArrayList<>());
+        }
+        Tweet newTweet = new Tweet(tweetId, time++);
+        tweetMap.get(userId).add(newTweet);
+        follow(userId, userId); 
+    }
+
+public List<Integer> getNewsFeed(int userId) {
+    List<Integer> result = new ArrayList<>();
+    PriorityQueue<Tweet> pq = new PriorityQueue<>((a, b) -> b.createdAt - a.createdAt);
+
+    Set<Integer> followedIds = followedMap.get(userId);
+    if (followedIds != null) {
+        for (int fId : followedIds) {
+            List<Tweet> fTweets = tweetMap.get(fId);
+            if (fTweets != null) {
+                pq.addAll(fTweets); 
+            }
+        }
+    }
+    while (!pq.isEmpty() && result.size() < 10) {
+        result.add(pq.poll().tId); 
+    }
+
+    return result;
+}
+
+
+    public void follow(int followerId, int followeeId) {
+        followedMap.computeIfAbsent(followerId, k -> new HashSet<>()).add(followeeId);
+    }
+
+    public void unfollow(int followerId, int followeeId) {
+        if (followedMap.containsKey(followerId) && followerId != followeeId) {
+            followedMap.get(followerId).remove(followeeId);
+        }
+    }
+}
