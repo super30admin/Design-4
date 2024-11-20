@@ -1,0 +1,55 @@
+// next -> TC: o(n) SC: o(1) : n skipped elements
+// hasNext -> TC: o(n) SC: o(1)
+// skip -> TC: o(n) SC: o(n) : n skipped elements
+//Referred solution online.
+
+import java.util.*;
+
+class SkipIterator implements Iterator<Integer> {
+    private Iterator<Integer> it;
+    private Map<Integer, Integer> skipMap; // value -> count of skips
+    private Integer nextEl;
+
+    public SkipIterator(Iterator<Integer> it) {
+        this.it = it;
+        this.skipMap = new HashMap<>();
+        advance();
+    }
+
+    private void advance() {
+        nextEl = null;
+        while (it.hasNext()) {
+            Integer el = it.next();
+            if (skipMap.containsKey(el)) {
+                skipMap.put(el, skipMap.get(el) - 1);
+                if (skipMap.get(el) == 0) {
+                    skipMap.remove(el);
+                }
+            } else {
+                nextEl = el;
+                break;
+            }
+        }
+    }
+
+    @Override
+    public boolean hasNext() {
+        return nextEl != null;
+    }
+
+    @Override
+    public Integer next() {
+        if (!hasNext()) throw new NoSuchElementException();
+        Integer result = nextEl;
+        advance();
+        return result;
+    }
+
+    public void skip(int val) {
+        if (nextEl != null && nextEl == val) {
+            advance();
+        } else {
+            skipMap.put(val, skipMap.getOrDefault(val, 0) + 1);
+        }
+    }
+}
