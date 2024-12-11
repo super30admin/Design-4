@@ -1,0 +1,31 @@
+Boilerplate code for skip iterator
+// "static void main" must be defined in a public class.
+class SkipIterator implements Iterator<Integer> {
+	public SkipIterator(Iterator<Integer> it) {
+	}
+	public boolean hasNext() {
+ 	}
+	public Integer next() {
+  	}
+	public void skip(int val) {
+ 	}
+}
+public class Main {
+    public static void main(String[] args) {
+        SkipIterator itr = new SkipIterator(Arrays.asList(5,6,7,5,6,8,9,5,5,6,8).iterator());
+        System.out.println(itr.hasNext()); // true
+        itr.skip(5);
+        System.out.println(itr.next()); //6
+        itr.skip(5);
+        System.out.println(itr.next());  //7
+        System.out.println(itr.next());  //6
+        itr.skip(8);
+        itr.skip(9);
+        System.out.println(itr.next());  //5
+        System.out.println(itr.next());  //5
+        System.out.println(itr.next());  //6
+        System.out.println(itr.hasNext()); // true
+        System.out.println(itr.next());  //8
+        System.out.println(itr.hasNext()); // false
+    }
+}
