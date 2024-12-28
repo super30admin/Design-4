@@ -1,13 +1,13 @@
 //Tc: O(1), O(k) when k consecutive elements needs to be skipped
 //SP: O(n): to store n number of elements to be skipped
 class SkipIterator implements Iterator<Integer> {
-    Iterator<Integer> it;
-    HashMap<Integer,Integer> skipMap;
+    Iterator<Integer> nit; // native itertaor
+    HashMap<Integer,Integer> skipMap; // to store future skip elements
     Integer nextEl;
 	public SkipIterator(Iterator<Integer> it) {
-        this.it=it;
+        this.nit=it;
         this.skipMap = new HashMap<>();
-        advance();
+        advance(); // if you get the first call as skip itsefl
 	}
 
 	public boolean hasNext() {
@@ -15,8 +15,8 @@ class SkipIterator implements Iterator<Integer> {
 	}
 
 	public Integer next() { // O(n)
-        Integer temp = nextEl; // previous next element
-        advance(); // get the correct of nextEl;
+        Integer temp = nextEl; // store previous next element in a temp
+        advance(); // sets the nextElement to valid nextElement
         return temp;
 	}
 
@@ -26,18 +26,18 @@ class SkipIterator implements Iterator<Integer> {
 	*/ 
 	public void skip(int val) {
         if(val==nextEl){
-            advance();
+            advance(); // then clear the nextElement and set a proper nextElement
         }else{
-            skipMap.put(val,skipMap.getOrDefault(val,0)+1);
+            skipMap.put(val,skipMap.getOrDefault(val,0)+1);// if it is a future Element then store in map
         }
 	}
 
     public void advance(){
         // find the new nextElement of Skip Iterator
-        //first the prev nextElement is declared null
-        this.nextEl = null;
-        while(nextEl == null && it.hasNext()){
-            Integer el = it.next(); // elment from original iterator
+        // first the prev nextElement is declared null
+        this.nextEl = null; // clear
+        while(it.hasNext()){ // identify the valid next Element with help of native iterator
+            Integer el = it.next(); // get elment from original iterator
             if(skipMap.containsKey(el)){
                 skipMap.put(el,skipMap.get(el)-1); // reducing the count of el which need to be skipped
                 skipMap.remove(el,0);
