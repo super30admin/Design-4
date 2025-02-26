@@ -8,7 +8,7 @@
 ## Problem 2: Skip Iterator(https://leetcode.com/discuss/interview-question/341818/Google-or-Onsite-or-Skip-Iterator)
 
 Design a SkipIterator that supports a method skip(int val). When it is called the next element equals val in iterator sequence should be skipped. If you are not familiar with Iterators check similar problems.
-
+```
 class SkipIterator implements Iterator<Integer> {
 
 	public SkipIterator(Iterator<Integer> it) {
@@ -27,6 +27,7 @@ class SkipIterator implements Iterator<Integer> {
 	public void skip(int val) {
 	}
 }
+```
 Example:
 
 SkipIterator itr = new SkipIterator([2, 3, 5, 6, 5, 7, 5, -1, 5, 10]);
