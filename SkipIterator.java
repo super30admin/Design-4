@@ -36,7 +36,7 @@ public class SkipIterator {
 
     public void advance(){ //assigns nextEl
         nextEl = null;
-        if(nextEl == null && nit.hasNext()){ //till we have valid element
+        while(nextEl == null && nit.hasNext()){ //till we have valid element
             int el = nit.next();
             if(skipMap.containsKey(el)){      
                 skipMap.put(el,skipMap.get(el)-1);
