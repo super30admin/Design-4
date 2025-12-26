@@ -2,7 +2,9 @@
 
 ## Problem 1: Design Twitter (https://leetcode.com/problems/design-twitter/)
 
-
+* first class Tweet is created, tweetsMap (key = userId, value = List of Tweets by that user), followed map(key = userId, value=its followers)
+* user must follow itself helpful to getFeed
+* follow() - making followed map, unfollow()- removing follower, postTweet() - making tweetsMap, getNewsFeed() - minHeap logic
 
 
 ## Problem 2: Skip Iterator(https://leetcode.com/discuss/interview-question/341818/Google-or-Onsite-or-Skip-Iterator)
